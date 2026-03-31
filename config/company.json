@@ -1,0 +1,5 @@
+{
+  "company": "Tilt",
+  "bus": ["cash-advance", "credit-card"],
+  "slack_channel": "#pulse-reports"
+}

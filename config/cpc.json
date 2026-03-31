@@ -1,0 +1,16 @@
+{
+  "pod": "Card Payments & Collections",
+  "team_key": "CPC",
+  "team_id": "1147be1a-36e1-49b6-9fae-714d55d6f86f",
+  "github_repos": [
+    "empowerfinance/empower-app",
+    "empowerfinance/empower-android",
+    "empowerfinance/empower-ios"
+  ],
+  "amplitude_project_id": "152808",
+  "issue_prefix": "CPC",
+  "noise_filters": {
+    "exclude_labels": ["SweeperAI"],
+    "exclude_title_patterns": ["SweeperAI Summary"]
+  }
+}

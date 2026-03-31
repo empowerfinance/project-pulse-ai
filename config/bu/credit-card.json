@@ -1,0 +1,5 @@
+{
+  "bu": "Credit Card",
+  "teams": ["cargo", "cpc"],
+  "slack_channel": "#pulse-reports"
+}

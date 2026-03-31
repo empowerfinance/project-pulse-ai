@@ -1,0 +1,5 @@
+{
+  "bu": "Your BU Name",
+  "teams": ["team1", "team2"],
+  "slack_channel": "#pulse-reports"
+}

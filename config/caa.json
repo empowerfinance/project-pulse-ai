@@ -1,0 +1,33 @@
+{
+  "pod": "Cash Advance - Activation",
+  "team_key": "CAA",
+  "team_id": "3bd61709-d853-4ee7-ac10-35d92a0ae196",
+  "github_repos": [
+    "empowerfinance/empower-android",
+    "empowerfinance/empower-ios",
+    "empowerfinance/empower-app",
+    "empowerfinance/tilt-us-monorepo"
+  ],
+  "amplitude_project_id": "152808",
+  "issue_prefix": "CAA",
+  "noise_filters": {
+    "exclude_labels": ["SweeperAI"],
+    "exclude_title_patterns": ["SweeperAI Summary"]
+  },
+  "slack_channels": {
+    "pod": { "name": "#pod-cash-advance", "id": "C04AW325MJ6" },
+    "features": [
+      { "name": "#feat-onboarding-to-ca-activation", "id": "C09G9PKFSJH" },
+      { "name": "#feat-cash-advance-web-onboarding", "id": "C07624W6WEM" }
+    ],
+    "alerts": { "name": "#alerts-cash-advance-product", "id": "C0AEF8ASHMM" }
+  },
+  "amplitude_charts": {
+    "14d_activation": { "id": "fdq1dvfd", "name": "Cash advance activation, 14d" },
+    "1h_activation": { "id": "v329bnbv", "name": "Cash advance activation, 1h" }
+  },
+  "amplitude_dashboards": {
+    "critical_metrics": { "id": "ii1xadl", "name": "#pod-cash-advance critical metrics" },
+    "web_activation": { "id": "4b74u2tz", "name": "[Web] Activation in web" }
+  }
+}

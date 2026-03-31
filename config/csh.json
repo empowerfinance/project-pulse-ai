@@ -1,0 +1,16 @@
+{
+  "pod": "Cash Advance - Retention",
+  "team_key": "CSH",
+  "team_id": "d7d3a397-c838-4db8-a443-0bc2925aafb6",
+  "github_repos": [
+    "empowerfinance/empower-android",
+    "empowerfinance/empower-ios",
+    "empowerfinance/empower-app"
+  ],
+  "amplitude_project_id": "152808",
+  "issue_prefix": "CSH",
+  "noise_filters": {
+    "exclude_labels": ["SweeperAI"],
+    "exclude_title_patterns": ["SweeperAI Summary"]
+  }
+}

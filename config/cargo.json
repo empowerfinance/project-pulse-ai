@@ -1,0 +1,15 @@
+{
+  "pod": "Card Growth",
+  "team_key": "CARGO",
+  "team_id": "7cd80596-d1ac-4c34-89d8-549eb2d5df80",
+  "github_repos": [
+    "empowerfinance/empower-app",
+    "empowerfinance/tilt-us-monorepo"
+  ],
+  "amplitude_project_id": "152808",
+  "issue_prefix": "CARGO",
+  "noise_filters": {
+    "exclude_labels": ["SweeperAI"],
+    "exclude_title_patterns": ["SweeperAI Summary"]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "pod": "Your Pod Name",
+  "team_key": "XXX",
+  "team_id": "your-linear-team-uuid-here",
+  "github_repos": [
+    "empowerfinance/your-repo-1",
+    "empowerfinance/your-repo-2"
+  ],
+  "amplitude_project_id": "152808",
+  "issue_prefix": "XXX",
+  "noise_filters": {
+    "exclude_labels": ["SweeperAI"],
+    "exclude_title_patterns": ["SweeperAI Summary"]
+  }
+}

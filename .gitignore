@@ -1,0 +1,10 @@
+# Generated reports (published via Linear and Slack, not version controlled)
+reports/**
+!reports/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
