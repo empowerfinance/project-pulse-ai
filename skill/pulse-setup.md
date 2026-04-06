@@ -7,7 +7,14 @@ description: Guided setup for Project Pulse AI — checks MCP connections, helps
 
 You are guiding the user through setting up Project Pulse AI. Walk through each step interactively, checking what's already done and skipping completed steps. Be concise — report pass/fail for each check and only stop to ask questions when input is needed.
 
-### Step 1 — Check MCP Connections
+### Step 0 — Detect Environment
+
+Determine which environment you're running in:
+
+- **Claude Code CLI:** You can execute bash commands. Proceed with the full setup (Steps 1–4).
+- **Claude.ai browser project:** You cannot execute bash commands. Use the browser setup flow (Steps 1B, 3B, 4B) and skip Steps 2 and the GitHub check.
+
+### Step 1 — Check MCP Connections (CLI mode)
 
 These are the data sources Pulse AI reads from. Check each one and report status.
 
@@ -39,7 +46,30 @@ If Linear or GitHub fail, stop and help the user fix them:
 
 If optional connections fail, note them but continue: "Slack/Notion/Amplitude are optional. Summaries will work with just Linear + GitHub, but adding these enriches the output."
 
-### Step 2 — Check Pulse Skill Installation
+### Step 1B — Check MCP Connections (Browser mode)
+
+Same checks as Step 1, but skip the GitHub CLI check. Replace it with:
+
+2. **GitHub:** ℹ️ Not available in browser mode. Reports will use Linear, Slack, and Amplitude signals only. GitHub PR data is a CLI-only feature.
+
+Report results as:
+
+```
+MCP Connection Status:
+  Linear:      ✓ Connected (as {user_name})
+  GitHub:      ℹ️ Not available (browser mode — CLI only)
+  Slack:       ✓ Connected / ✗ Not connected
+  Notion:      ✓ Connected / ✗ Not connected
+  Amplitude:   ✓ Connected / ✗ Not connected
+```
+
+If Linear fails, stop and help: "Go to claude.ai → Settings → Integrations → Linear → Connect"
+
+Then skip to Step 3B.
+
+### Step 2 — Check Pulse Skill Installation (CLI mode only)
+
+> **Browser mode:** Skip this step. In a browser project, the instructions are already loaded as project instructions.
 
 Verify the `/pulse` skill is available by checking if the file exists:
 
@@ -133,7 +163,15 @@ Use this template:
 
 Add `slack_channels` and `amplitude_charts`/`amplitude_dashboards` sections if the user provided them.
 
-### Step 4 — Verify Setup
+### Step 3B — Pod Configuration (Browser mode)
+
+Same interactive flow as Step 3 for gathering team information (team name, Slack channels, Amplitude charts). However, instead of writing the config to disk:
+
+1. Generate the JSON config in the conversation.
+2. Tell the user: "Copy the JSON below and save it as `{team_key_lowercase}.json`. Then upload it to this project's Knowledge files so I can access it in future conversations."
+3. If the user already has config files uploaded as project knowledge, list them and offer to use one.
+
+### Step 4 — Verify Setup (CLI mode)
 
 Run a quick validation:
 
@@ -143,6 +181,7 @@ Run a quick validation:
 
 Print a summary:
 
+**CLI mode:**
 ```
 Pulse AI Setup Complete!
 
@@ -165,6 +204,37 @@ To generate summaries:
   /pulse {team_key_lowercase} --pod --monthly   Monthly roundup
 
 For more details, see the README in project-pulse-ai/.
+```
+
+### Step 4B — Verify Setup (Browser mode)
+
+1. Load the pod config from project knowledge and confirm it parses as valid JSON
+2. Call `mcp__claude_ai_Linear__get_team` with the configured team key to confirm it resolves
+3. Skip GitHub repo check (not available)
+
+Print a summary:
+
+```
+Pulse AI Setup Complete! (Browser mode)
+
+  MCP Connections:
+    Linear:     ✓ {user_name}
+    GitHub:     ℹ️ Not available (browser mode)
+    Slack:      ✓ / ✗
+    Notion:     ✓ / ✗
+    Amplitude:  ✓ / ✗
+
+  Pod Config:   {config_filename} (project knowledge)
+  Team:         {team_name} ({team_key})
+  Slack:        {channels or "not configured"}
+  Amplitude:    {charts or "not configured"}
+
+To generate summaries, just ask:
+  "Generate a pod rollup for {team_key_lowercase}"
+  "Summarize initiative {initiative_name}"
+  "Monthly roundup for {team_key_lowercase}"
+
+Note: GitHub PR data is not available in browser mode. Reports use Linear, Slack, and Amplitude signals.
 ```
 
 ### Important Notes

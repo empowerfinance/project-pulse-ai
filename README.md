@@ -1,211 +1,120 @@
 # Project Pulse AI
 
+[Open in Claude](https://claude.ai/project/019d6411-a3e6-70f2-b971-a8ac0ea9aca0)
+
 Automated, multi-level status summaries powered by AI. Synthesizes signals from Linear, GitHub, Slack, and Amplitude into structured, evidence-backed updates — from individual projects up to company-wide executive views.
 
-## What it does
+## How it works
 
-- Generates **status reports at every level**: project, initiative, pod, BU, and company
-- Classifies health as On Track / At Risk / Off Track with evidence
-- Links every claim to a source: Linear issue, GitHub PR, project update, Amplitude chart
-- Detects **silent failures** — initiatives with no updates, no PRs, no movement
-- Publishes to **Linear** (initiative status updates) and **Slack** (`#pulse-reports` with thread detail)
-- Supports **monthly roundup** narratives for leadership presentations
+Pulse reads from the tools your team already uses — no new processes, no new fields, no behavior changes required.
 
-## Prerequisites
+1. **Resolves** the target at the requested level (project, initiative, pod, BU, or company)
+2. **Gathers signals** in parallel from:
+   - **Linear:** issues, project status updates, cycle velocity, initiative health
+   - **GitHub:** PRs (merged, open, stale) matched via branch naming convention (CLI only)
+   - **Slack:** keyword searches in pod and feature channels for blockers, progress, decisions
+   - **Amplitude:** metric trends from configured dashboards and charts
+3. **Classifies health** using evidence-based rules:
+   - Steady progress + no blockers → **On Track**
+   - Blockers, stale issues, low velocity, declining metrics → **At Risk**
+   - Missed deadlines, critical blockers, no activity → **Off Track**
+4. **Detects silent failures** — initiatives with no updates, no PRs, no ticket movement
+5. **Generates** a structured markdown summary where every claim links back to source data
+6. **Publishes** to conversation (default), Linear (initiative status updates), Slack (`#pulse-reports`), or all at once
 
-- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed
-- The following Claude.ai MCP connectors authenticated (see [Setup](#setup) below):
-  - **Linear** (required)
-  - **GitHub** via `gh` CLI (required)
-  - **Slack** (optional — enhances summaries with team discussion signals, required for `--output=slack` and `--publish`)
-  - **Amplitude** (optional — adds product metric trends to reports)
+## Report hierarchy
 
-## Setup
-
-### 1. Install Claude Code
-
-```bash
-npm install -g @anthropic-ai/claude-code
-```
-
-### 2. Clone this repo
-
-```bash
-git clone <repo-url> project-pulse-ai
-cd project-pulse-ai
-```
-
-### 3. Copy the skills into your Claude commands directory
-
-```bash
-mkdir -p ~/.claude/commands
-cp skill/pulse.md ~/.claude/commands/pulse.md
-cp skill/pulse-setup.md ~/.claude/commands/pulse-setup.md
-```
-
-Or, if you want it scoped to a specific project directory:
-
-```bash
-mkdir -p /path/to/your/project/.claude/commands
-cp skill/pulse.md /path/to/your/project/.claude/commands/pulse.md
-cp skill/pulse-setup.md /path/to/your/project/.claude/commands/pulse-setup.md
-```
-
-### 4. Run guided setup
-
-The easiest way to get going is with the setup skill. After copying the skills, restart Claude Code and run:
+Reports are available at five levels, each progressively more condensed:
 
 ```
-/pulse-setup
+Company          All BUs aggregated — executive scan in under a minute
+  └─ BU          Multiple pods aggregated — pod summary tables + top risks/wins
+      └─ Pod     All initiatives for a team — overview table + per-initiative detail
+          └─ Initiative   One initiative with its projects — full signal detail
+              └─ Project  Single project — issues, PRs, milestones
 ```
 
-This will:
-- Check all MCP connections (Linear, GitHub, Slack, Notion, Amplitude)
-- Help you create a pod config for your team (or choose an existing one)
-- Verify everything is ready
+Each level aggregates the level below it. Higher levels strip out granular detail and surface only the most important signals.
 
-You can also set things up manually by following steps 5-6 below.
+## Example prompts
 
-### 5. Authenticate MCP connectors
+Pulse runs in two environments. Use CLI flags in Claude Code, or natural language in the browser:
 
-MCP connectors are managed through [claude.ai/settings/integrations](https://claude.ai/settings/integrations). Each connector needs to be authenticated once — after that it works across all Claude Code sessions.
+| Level | Claude Code CLI | Browser project |
+|---|---|---|
+| Project | `/pulse "RAM experience v2" --project` | `Summarize project "RAM experience v2"` |
+| Initiative | `/pulse [CAA - FY26Q1] Increase mobile activation by 10%` | `Summarize initiative [CAA - FY26Q1] Increase mobile activation by 10%` |
+| Pod | `/pulse caa --pod` | `Generate a pod rollup for CAA` |
+| BU | `/pulse --bu=cash-advance` | `BU rollup for cash advance` |
+| Company | `/pulse --company` | `Company pulse` |
+| Monthly | `/pulse caa --pod --monthly` | `Monthly roundup for CAA` |
+| Custom period | `/pulse caa --pod --period=7d` | `Pod rollup for CAA for the last 7 days` |
 
-**Required:**
+## Output destinations
 
-| Connector | How to authenticate |
-|---|---|
-| **Linear** | Go to claude.ai Settings → Integrations → Linear → Connect. Sign in with your Tilt Linear account. |
-| **GitHub** | Install the `gh` CLI and run `gh auth login`. Follow the prompts to authenticate with your GitHub account. |
+By default, reports are displayed in the conversation only. You can also publish:
 
-**Optional (but recommended):**
+### Linear
 
-| Connector | How to authenticate |
-|---|---|
-| **Slack** | claude.ai Settings → Integrations → Slack → Connect. Sign in with your Tilt Slack workspace. |
-| **Amplitude** | claude.ai Settings → Integrations → Amplitude → Connect. Sign in with your Tilt Amplitude account. |
+Posts a **status update on each initiative** with the appropriate health classification (On Track / At Risk / Off Track). Updates appear in Linear's native initiative update timeline — the same place PMs write manual updates. Each initiative gets its own focused update, not one giant blob.
 
-**Verify your connections:**
+**CLI:** `/pulse caa --pod --output=linear`
+**Browser:** `Generate a pod rollup for CAA and post to Linear`
 
-```bash
-claude mcp list
-```
+### Slack
 
-You should see `✓ Connected` for Linear and any optional connectors you set up.
+Posts to **`#pulse-reports`** in two parts:
+- **Top-level message:** A condensed summary card — status counts, top risks, key wins. Scannable at the channel level.
+- **Thread reply:** The full detailed report. One click away, but doesn't clutter the channel.
 
-### 6. Create your pod config (manual alternative to /pulse-setup)
+If the report is long, it splits across multiple thread replies with part indicators (1/3, 2/3, 3/3).
 
-Copy the example config and fill in your team's details:
+**CLI:** `/pulse caa --pod --output=slack`
+**Browser:** `Generate a pod rollup for CAA and post to Slack`
 
-```bash
-cp config/example.json config/your-team.json
-```
+### All at once
 
-Edit `config/your-team.json`:
+Publishes to Linear + Slack + saves to file (CLI only):
 
-```json
-{
-  "pod": "Your Pod Name",
-  "team_key": "YOUR_KEY",
-  "team_id": "your-linear-team-uuid",
-  "github_repos": [
-    "empowerfinance/your-repo-1",
-    "empowerfinance/your-repo-2"
-  ],
-  "amplitude_project_id": "152808",
-  "issue_prefix": "YOUR_KEY",
-  "noise_filters": {
-    "exclude_labels": ["SweeperAI"],
-    "exclude_title_patterns": ["SweeperAI Summary"]
-  }
-}
-```
+**CLI:** `/pulse caa --pod --publish`
+**Browser:** `Generate a pod rollup for CAA and publish to both Linear and Slack`
 
-**How to find your values:**
+All publishing actions **ask for confirmation** before posting.
 
-| Field | Where to find it |
-|---|---|
-| `team_key` | Your Linear team's short prefix (e.g., `CAA`, `GRW`). Visible in issue IDs like `CAA-1234`. |
-| `team_id` | Open Claude Code and run: `/pulse` then ask it to look up your team. Or find it in the Linear URL when viewing your team. |
-| `github_repos` | The GitHub repos your team contributes to. Format: `org/repo-name`. |
-| `amplitude_project_id` | `152808` for Empower production. Use `154226` for dev. |
-| `issue_prefix` | Usually same as `team_key`. Used to match GitHub PRs to Linear issues. |
-| `noise_filters` | Labels or title patterns to exclude from summaries (e.g., automated bot issues). |
+### File (CLI only)
 
-## Usage
+Saves the report as markdown to `reports/{team_key}/` with date suffixes. These are gitignored.
 
-Start Claude Code in any directory that has the pulse skill available:
+**CLI:** `/pulse caa --pod --save`
 
-```bash
-claude
-```
+## What's in a report
 
-### Report hierarchy
+A pod-level report includes:
 
-```
-Company          /pulse --company
-  └─ BU          /pulse --bu=cash-advance
-      └─ Pod     /pulse caa --pod
-          └─ Initiative  /pulse [initiative name]
-              └─ Project  /pulse "RAM experience v2" --project
-```
+- **Overview table** — active initiatives, on track / at risk / off track counts, cycle velocity
+- **Initiative status table** — each initiative with a one-line key signal
+- **Top risks** — with evidence links to Linear issues, project updates, or Amplitude charts
+- **Key wins** — shipped work, completed milestones, strong velocity
+- **Per-initiative detail** — progress, blockers, completed/in-progress issues, merged PRs
+- **Metrics impact** — Amplitude trends (e.g., "iOS 14d activation: 60% → 46%, declining ~14pp")
+- **Slack signals** — relevant quotes from team discussions, attributed to speakers
+- **Cross-team dependencies** — detected from multi-team projects
+- **Leadership summary** — what's going well, what needs attention, recommendations
 
-Each level aggregates the level below. Higher levels are progressively more condensed.
+Monthly roundups use the same data with a 30-day window and narrative prose format suitable for presentations.
 
-### Examples by level
+## Data sources
 
-```bash
-# Project — single project detail
-/pulse "RAM experience v2" --project
-
-# Initiative — one initiative with its projects
-/pulse [CAA - FY26Q1] Increase mobile 14d register -> CA activation by 10%
-
-# Pod — all initiatives for a team
-/pulse caa --pod
-
-# BU — aggregate multiple pods
-/pulse --bu=cash-advance
-
-# Company — all BUs
-/pulse --company
-
-# Monthly variants (30-day window, narrative format)
-/pulse caa --pod --monthly
-/pulse --bu=cash-advance --monthly
-/pulse --company --monthly
-
-# Custom time period
-/pulse caa --pod --period=7d
-```
-
-### Output options
-
-By default, `/pulse` displays the report in the conversation only. Use flags to save or publish:
-
-```
-/pulse caa --pod --save              # Display + save to reports/caa/
-/pulse caa --pod --output=linear     # Display + post status updates to Linear
-/pulse caa --pod --output=slack      # Display + post to #pulse-reports Slack
-/pulse caa --pod --publish           # Display + save + Linear + Slack (all at once)
-```
-
-| Flag | Display | File | Linear | Slack |
-|---|---|---|---|---|
-| *(none)* | Yes | | | |
-| `--save` | Yes | Yes | | |
-| `--output=linear` | Yes | | Yes | |
-| `--output=slack` | Yes | | | Yes |
-| `--publish` | Yes | Yes | Yes | Yes |
-
-**Linear output:** Posts a status update on each initiative with health classification (On Track / At Risk / Off Track). Shows up in Linear's native initiative update timeline.
-
-**Slack output:** Posts a condensed summary card to `#pulse-reports` with the full report in a thread reply. Scannable at the channel level, detailed in the thread.
-
-All publishing actions ask for confirmation before posting.
+| Source | Connection | What it provides | Availability |
+|---|---|---|---|
+| Linear | MCP (claude.ai) | Issues, project status updates, cycle velocity, initiative health | CLI + Browser |
+| GitHub | `gh` CLI | PRs, merge activity, review status | CLI only |
+| Slack | MCP (claude.ai) | Team discussions, blocker signals, standup updates | CLI + Browser |
+| Amplitude | MCP (claude.ai) | Metric trends, funnel conversion rates, experiment results | CLI + Browser |
 
 ## Configs
 
-### Pod configs (`config/`)
+Pod configs define which team, repos, channels, and metrics to include:
 
 | Config | Team | File |
 |---|---|---|
@@ -214,82 +123,51 @@ All publishing actions ask for confirmation before posting.
 | Card Growth | CARGO | `config/cargo.json` |
 | Card Payments & Collections | CPC | `config/cpc.json` |
 
-To add your team, run `/pulse-setup` or copy `config/example.json`.
-
-### BU configs (`config/bu/`)
-
-BU configs aggregate multiple pod configs:
+BU configs aggregate pods:
 
 | BU | Pods | File |
 |---|---|---|
 | Cash Advance | CAA, CSH | `config/bu/cash-advance.json` |
 | Credit Card | CARGO, CPC | `config/bu/credit-card.json` |
 
-```json
-{
-  "bu": "Cash Advance",
-  "teams": ["caa", "csh"],
-  "slack_channel": "#pulse-reports"
-}
-```
+Company config (`config/company.json`) aggregates all BUs.
 
-To add a BU, copy `config/bu/example.json` and list the pod config names in `teams`.
+To add your team, use the guided setup or copy `config/example.json`.
 
-### Company config (`config/company.json`)
+## Setup
 
-Aggregates all BUs:
+Pulse AI runs in two environments. Choose the one that fits your workflow — or use both:
 
-```json
-{
-  "company": "Tilt",
-  "bus": ["cash-advance", "credit-card"],
-  "slack_channel": "#pulse-reports"
-}
-```
+| | Claude.ai Browser Project | Claude Code CLI |
+|---|---|---|
+| **Best for** | Quick reports, non-engineers, no install needed | Full-fidelity reports with GitHub PR data |
+| **GitHub PR data** | Not available | Yes |
+| **Save to file** | Not available | Yes |
+| **Linear + Slack publishing** | Yes | Yes |
+| **Setup time** | ~5 minutes | ~10 minutes |
+| **Setup guide** | [Browser setup](docs/setup-browser.md) | [CLI setup](docs/setup-cli.md) |
 
-Add new BUs to the `bus` array as they're configured.
-
-## How it works
-
-1. **Resolves** the target at the requested level (project → initiative → pod → BU → company)
-2. **Gathers signals** in parallel from:
-   - Linear: issues, project status updates, cycle velocity
-   - GitHub: PRs (merged, open, stale) matched via branch naming convention
-   - Slack: keyword searches in relevant channels (if configured)
-   - Amplitude: metric trends from dashboards/charts (if configured)
-3. **Classifies health** using rules:
-   - Steady progress + no blockers → On Track
-   - Blockers, stale issues, low velocity, declining metrics → At Risk
-   - Missed deadlines, critical blockers, no activity → Off Track
-4. **Generates** a structured markdown summary with evidence links, progressively condensed at higher levels
-5. **Outputs** to conversation (default), file (`--save`), Linear (`--output=linear`), Slack (`--output=slack`), or all (`--publish`)
-
-## Example Output
-
-Reports are published to **Linear** (initiative status updates) and **Slack** (`#pulse-reports`) using the `--publish` flag. For local reference, `--save` writes reports to `reports/{team_key}/` with date suffixes — these are gitignored and not committed to the repo.
+**Quick start:** The browser project is already set up and ready to use at [claude.ai/project/019d6411-a3e6-70f2-b971-a8ac0ea9aca0](https://claude.ai/project/019d6411-a3e6-70f2-b971-a8ac0ea9aca0). Open a chat and try `Generate a pod rollup for CAA`.
 
 ## FAQ
 
-**Q: Do I need to change how my team uses Linear?**
+**Do I need to change how my team uses Linear?**
 No. Pulse reads whatever is already in Linear. No new fields, labels, or processes required.
 
-**Q: What if my team doesn't use GitHub?**
-GitHub is optional. The summary will note that no PR data was available and reduce confidence accordingly.
+**Will it post anything without my permission?**
+No. Publishing to Linear or Slack always asks for confirmation first. Default output is displayed in your conversation only.
 
-**Q: How does it match PRs to Linear issues?**
-By branch naming convention. If your PR branch contains `CAA-1234` or the title contains `LB#CAA-1234`, it gets linked to that issue.
+**Can I run this for a team I'm not on?**
+Yes, as long as you have read access in Linear.
 
-**Q: Can I run this for a team I'm not on?**
-Yes, as long as you have read access in Linear. The tool uses your authenticated Linear account.
+**What about sensitive information?**
+Pulse only reads data you already have access to. It doesn't store anything externally. Reports saved with `--save` are gitignored.
 
-**Q: Will it post anything without my permission?**
-No. The `--output=linear`, `--output=slack`, and `--publish` flags all ask for confirmation before posting. Default output is markdown displayed in your terminal.
+**How does it match PRs to Linear issues?**
+By branch naming convention. If your PR branch contains `CAA-1234` or the title contains `LB#CAA-1234`, it gets linked to that issue. (CLI only — GitHub data is not available in browser mode.)
 
-**Q: Where do reports go in Slack?**
-To `#pulse-reports`. The top-level message is a condensed summary card (status counts, top risks, wins). The full report goes in a thread reply so the channel stays scannable.
+**Where do reports go in Slack?**
+To `#pulse-reports`. The top-level message is a condensed summary card. The full report goes in a thread reply so the channel stays scannable.
 
-**Q: Where do reports go in Linear?**
-As initiative status updates — the same place PMs write manual updates. Each initiative gets its own update with the correct health classification (On Track / At Risk / Off Track).
-
-**Q: What about sensitive information?**
-Pulse only reads data you already have access to. It doesn't store anything externally. Summaries are generated in your local Claude Code session. Reports saved with `--save` are gitignored.
+**Where do reports go in Linear?**
+As initiative status updates — the same place PMs write manual updates. Each initiative gets its own update with the correct health classification.
