@@ -11,6 +11,18 @@ Run Pulse AI entirely in a Claude.ai browser project — no CLI, no terminal, no
 
 Authenticate integrations at [claude.ai/settings/integrations](https://claude.ai/settings/integrations).
 
+### How MCP connections work with shared projects
+
+MCP integrations are **per-user, not per-project**. When you share the project URL with a teammate:
+
+- They get the project instructions and uploaded knowledge files (configs)
+- They use their own authenticated MCP integrations, not yours
+- Reports they generate are scoped to their own Linear / Slack / Amplitude permissions — they'll only see data they already have access to
+
+So every user of the shared project needs to authenticate their own integrations at [claude.ai/settings/integrations](https://claude.ai/settings/integrations) before they can generate reports. This takes about a minute per integration and only needs to be done once per user.
+
+This is actually a feature: access controls are enforced naturally rather than bypassed. If a teammate can't see a private Linear project, Pulse won't include it in their report either.
+
 ## Setup
 
 ### 1. Create a new project
