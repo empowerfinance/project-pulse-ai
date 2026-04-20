@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="Noise-to-pulse visualization">
+  <defs>
+    <filter id="pulseGlow" x="-5%" y="-50%" width="110%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .label { font-family: Inter, -apple-system, Helvetica, Arial, sans-serif; font-weight: 600; letter-spacing: 0.12em; fill: #1A1A1A; }
+      .dim   { font-family: Inter, -apple-system, Helvetica, Arial, sans-serif; font-weight: 500; letter-spacing: 0.18em; fill: #8A857B; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="900" fill="#F1ECE0"/>
+
+  <!-- Dim section tag -->
+  <text x="80" y="120" class="dim" font-size="16">SCATTERED SIGNAL</text>
+
+  <!-- Noise cluster (upper region, y 150-520) -->
+  <g stroke="#8A857B" fill="none" stroke-linejoin="miter" stroke-linecap="round">
+    <!-- Square wave (Linear-ish) -->
+    <path opacity="0.5" stroke-width="1.5"
+      d="M 80,180 H 135 V 260 H 190 V 180 H 245 V 260 H 300 V 180 H 355 V 260 H 410 V 180 H 465 V 260 H 520 V 180 H 575 V 260 H 630 V 180 H 685 V 260 H 740 V 180 H 795 V 260 H 850 V 180 H 905 V 260 H 960 V 180 H 1015 V 260 H 1070 V 180 H 1125 V 260 H 1180 V 180 H 1235 V 260 H 1290 V 180 H 1345 V 260 H 1400 V 180 H 1455 V 260 H 1520"/>
+
+    <!-- Sawtooth spikes (GitHub-ish) -->
+    <path opacity="0.45" stroke-width="1.5"
+      d="M 80,320 L 115,270 L 115,320 L 180,320 L 215,262 L 215,320 L 280,320 L 315,275 L 315,320 L 380,320 L 415,265 L 415,320 L 480,320 L 515,272 L 515,320 L 580,320 L 615,260 L 615,320 L 680,320 L 715,278 L 715,320 L 780,320 L 815,268 L 815,320 L 880,320 L 915,274 L 915,320 L 980,320 L 1015,262 L 1015,320 L 1080,320 L 1115,276 L 1115,320 L 1180,320 L 1215,270 L 1215,320 L 1280,320 L 1315,265 L 1315,320 L 1380,320 L 1415,274 L 1415,320 L 1480,320 L 1515,268 L 1515,320 L 1520,320"/>
+
+    <!-- Dense chatter (Slack-ish) -->
+    <path opacity="0.55" stroke-width="1.3"
+      d="M 80,400 Q 95,378 110,400 T 140,400 Q 155,420 170,400 T 200,400 Q 215,376 230,400 T 260,400 Q 275,422 290,400 T 320,400 Q 335,380 350,400 T 380,400 Q 395,420 410,400 T 440,400 Q 455,378 470,400 T 500,400 Q 515,418 530,400 T 560,400 Q 575,380 590,400 T 620,400 Q 635,420 650,400 T 680,400 Q 695,376 710,400 T 740,400 Q 755,422 770,400 T 800,400 Q 815,378 830,400 T 860,400 Q 875,420 890,400 T 920,400 Q 935,380 950,400 T 980,400 Q 995,418 1010,400 T 1040,400 Q 1055,378 1070,400 T 1100,400 Q 1115,422 1130,400 T 1160,400 Q 1175,376 1190,400 T 1220,400 Q 1235,420 1250,400 T 1280,400 Q 1295,378 1310,400 T 1340,400 Q 1355,420 1370,400 T 1400,400 Q 1415,378 1430,400 T 1460,400 Q 1475,420 1490,400 T 1520,400"/>
+
+    <!-- Smooth sine (Amplitude-ish) -->
+    <path opacity="0.5" stroke-width="1.5"
+      d="M 80,480 C 175,445 270,445 365,480 C 460,515 555,515 650,480 C 745,445 840,445 935,480 C 1030,515 1125,515 1220,480 C 1315,445 1410,445 1505,480 L 1520,480"/>
+  </g>
+
+  <!-- Faint source labels on the left -->
+  <g class="dim" font-size="12">
+    <text x="80" y="175">LINEAR</text>
+    <text x="80" y="315">GITHUB</text>
+    <text x="80" y="395">SLACK</text>
+    <text x="80" y="475">AMPLITUDE</text>
+  </g>
+
+  <!-- Divider whitespace (no line, just visual break via y gap) -->
+
+  <!-- Emerged pulse tag -->
+  <text x="80" y="640" class="label" font-size="16">PULSE</text>
+
+  <!-- Clean pulse line (lower region, y 700) -->
+  <g filter="url(#pulseGlow)">
+    <path fill="none" stroke="#C6E812" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"
+      d="M 80,720
+         L 720,720
+         L 735,714
+         L 750,720
+         L 770,720
+         L 780,725
+         L 790,660
+         L 800,780
+         L 810,725
+         L 820,720
+         L 850,720
+         L 865,705
+         L 885,720
+         L 1520,720"/>
+  </g>
+
+  <!-- Small endpoint dot -->
+  <circle cx="1520" cy="720" r="6" fill="#C6E812" filter="url(#pulseGlow)"/>
+</svg>

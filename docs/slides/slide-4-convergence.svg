@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="Signal convergence visualization">
+  <defs>
+    <filter id="pulseGlow" x="-5%" y="-50%" width="110%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <radialGradient id="nodeHalo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#C6E812" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#C6E812" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#C6E812" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .src     { font-family: Inter, -apple-system, Helvetica, Arial, sans-serif; font-weight: 700; letter-spacing: 0.14em; fill: #1A1A1A; }
+      .tag     { font-family: Inter, -apple-system, Helvetica, Arial, sans-serif; font-weight: 600; letter-spacing: 0.18em; fill: #6B6760; }
+      .pulse-l { font-family: Inter, -apple-system, Helvetica, Arial, sans-serif; font-weight: 800; letter-spacing: 0.2em; fill: #1A1A1A; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="900" fill="#F1ECE0"/>
+
+  <!-- Column tags -->
+  <text x="80" y="90" class="tag" font-size="14">FOUR NOISY SOURCES</text>
+  <text x="1520" y="90" class="tag" font-size="14" text-anchor="end">ONE CLEAN SIGNAL</text>
+
+  <!-- ============ Source rows ============ -->
+
+  <!-- Row 1: LINEAR (square wave) -->
+  <text x="50" y="205" class="src" font-size="18">LINEAR</text>
+  <path fill="none" stroke="#8A857B" stroke-width="1.8" stroke-linejoin="miter"
+    d="M 220,170 H 265 V 230 H 310 V 170 H 355 V 230 H 400 V 170 H 445 V 230 H 490 V 170 H 535 V 230 H 580 V 170 H 625 V 230 H 670 V 170 H 715 V 230 H 760 V 170 H 805 V 230 H 850 V 170 H 895 V 230 H 940"/>
+
+  <!-- Row 2: GITHUB (sawtooth spikes) -->
+  <text x="50" y="355" class="src" font-size="18">GITHUB</text>
+  <path fill="none" stroke="#8A857B" stroke-width="1.8"
+    d="M 220,380 L 250,320 L 250,380 L 310,380 L 340,312 L 340,380 L 400,380 L 430,325 L 430,380 L 490,380 L 520,316 L 520,380 L 580,380 L 610,322 L 610,380 L 670,380 L 700,314 L 700,380 L 760,380 L 790,328 L 790,380 L 850,380 L 880,318 L 880,380 L 940,380"/>
+
+  <!-- Row 3: SLACK (dense chatter) -->
+  <text x="50" y="505" class="src" font-size="18">SLACK</text>
+  <path fill="none" stroke="#8A857B" stroke-width="1.6"
+    d="M 220,500 Q 234,482 248,500 T 276,500 Q 290,520 304,500 T 332,500 Q 346,480 360,500 T 388,500 Q 402,522 416,500 T 444,500 Q 458,484 472,500 T 500,500 Q 514,520 528,500 T 556,500 Q 570,480 584,500 T 612,500 Q 626,522 640,500 T 668,500 Q 682,484 696,500 T 724,500 Q 738,520 752,500 T 780,500 Q 794,482 808,500 T 836,500 Q 850,520 864,500 T 892,500 Q 906,484 920,500 T 940,500"/>
+
+  <!-- Row 4: AMPLITUDE (smooth sine) -->
+  <text x="50" y="655" class="src" font-size="18">AMPLITUDE</text>
+  <path fill="none" stroke="#8A857B" stroke-width="1.8"
+    d="M 220,650 C 280,615 340,615 400,650 C 460,685 520,685 580,650 C 640,615 700,615 760,650 C 820,685 880,685 940,650"/>
+
+  <!-- ============ Convergence connectors (thin dashed grey) ============ -->
+  <g fill="none" stroke="#8A857B" stroke-width="1.2" stroke-dasharray="4,4" opacity="0.6">
+    <path d="M 940,200 C 1000,200 1030,330 1080,425"/>
+    <path d="M 940,370 C 1000,370 1035,400 1080,425"/>
+    <path d="M 940,500 C 1000,500 1035,465 1080,425"/>
+    <path d="M 940,650 C 1000,650 1030,520 1080,425"/>
+  </g>
+
+  <!-- ============ Convergence node ============ -->
+  <circle cx="1080" cy="425" r="120" fill="url(#nodeHalo)"/>
+  <circle cx="1080" cy="425" r="26" fill="#C6E812" filter="url(#pulseGlow)"/>
+  <text x="1080" y="570" class="tag" font-size="13" text-anchor="middle">SYNTHESIS · CLAUDE + MCP</text>
+
+  <!-- ============ Output pulse line ============ -->
+  <g filter="url(#pulseGlow)">
+    <path fill="none" stroke="#C6E812" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"
+      d="M 1110,425
+         L 1240,425
+         L 1255,432
+         L 1270,425
+         L 1285,425
+         L 1295,430
+         L 1308,370
+         L 1322,485
+         L 1336,428
+         L 1350,425
+         L 1385,425
+         L 1400,410
+         L 1418,425
+         L 1480,425"/>
+  </g>
+
+  <!-- PULSE label at end of the line -->
+  <text x="1500" y="432" class="pulse-l" font-size="22">PULSE</text>
+
+</svg>
