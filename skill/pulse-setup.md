@@ -105,7 +105,7 @@ Show the user what's available:
 ```
 Available pod configs:
   caa.json    — Cash Advance - Activation
-  csh.json    — Cash Advance - Retention
+  subex.json  — Subscription Experience
   cargo.json  — Card Growth
   cpc.json    — Card Payments & Collections
 

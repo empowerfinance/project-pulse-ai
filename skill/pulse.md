@@ -599,7 +599,7 @@ mcp__claude_ai_Linear__save_status_update(
 )
 ```
 
-If the initiative has no ID (team uses projects instead of initiatives, like CSH), post at the project level instead:
+If the initiative has no ID (team uses projects instead of initiatives), post at the project level instead:
 
 ```
 mcp__claude_ai_Linear__save_status_update(

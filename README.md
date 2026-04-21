@@ -119,7 +119,7 @@ Pod configs define which team, repos, channels, and metrics to include:
 | Config | Team | File |
 |---|---|---|
 | Cash Advance - Activation | CAA | `config/caa.json` |
-| Cash Advance - Retention | CSH | `config/csh.json` |
+| Subscription Experience | SUBEX | `config/subex.json` |
 | Card Growth | CARGO | `config/cargo.json` |
 | Card Payments & Collections | CPC | `config/cpc.json` |
 
@@ -127,7 +127,7 @@ BU configs aggregate pods:
 
 | BU | Pods | File |
 |---|---|---|
-| Cash Advance | CAA, CSH | `config/bu/cash-advance.json` |
+| Cash Advance | CAA, SUBEX | `config/bu/cash-advance.json` |
 | Credit Card | CARGO, CPC | `config/bu/credit-card.json` |
 
 Company config (`config/company.json`) aggregates all BUs.
