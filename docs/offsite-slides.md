@@ -7,57 +7,41 @@ Brand aesthetic (from the problem-definition template):
 - **Type:** bold sans-serif for display, italic emphasis on key words
 - **Layout:** generous whitespace, left-heavy text, right-side content blocks
 
-Keep all five slides in this system so the deck feels unified.
+Keep all four slides in this system so the deck feels unified.
 
 ---
 
-## Slide 1 — The Question
+## Slide 1 — The Status Tax
 
-**Purpose:** Set up the hook. Audience should be curious, not yet know the punchline.
+**Purpose:** Open cold. Establish the problem upfront by making the cost of status reporting tangible and showing how it compounds with the org hierarchy.
 
-**Layout:** Mostly empty. One big question, left-aligned.
+**Layout:** Full-bleed. Left/center: hierarchy pyramid (32 → 4 → 2 → 1). Right: big number. Bottom: one-line caption.
 
-**Copy:**
+**Copy (all rendered inside the SVG):**
 
-> Pill tag (top left): `AI SPRINT · PROJECT PULSE`
+> Pill tag (top left): `THE STATUS TAX`
 >
-> Display headline (huge, italic emphasis):
-> **Of EPD's *~32 active initiatives*, how many have a health status set in Linear?**
+> Subtitle (below pill, italic): *A slice of Tilt · 2 BUs · 4 pods · 32 initiatives*
 >
-> Footer: `2026 · Tilt`
+> Row labels (left edge): `COMPANY ×1`, `BUs ×2`, `PODS ×4`, `INITIATIVES ×32`
+>
+> Right column: **~50** / HRS / MONTH / *a full work week, every month*
+>
+> Bottom caption: *At every level, a human reads the level below and writes for the level above.*
 
-**No visual needed.** The emptiness is the point — it should feel like the room is waiting.
+**Visual:** Use `docs/slides/slide-2-status-tax.svg` as the full-bleed slide image.
 
-**Presenter cue:** Pause. Let the audience guess. Don't answer. Click to next slide.
+**Presenter cue:** Open on this slide for the full 1:30 opening. Walk the pyramid bottom-up as you narrate. Repeat the "slice of Tilt" framing three times: up front, when the number lands, and as the exit ("across the whole company, it's materially more"). Acknowledge the 50-hour number is a ballpark — the point is that it's non-trivial.
 
 ---
 
-## Slide 2 — The Answer
+## Slide 2 — Define the Problem
 
-**Purpose:** Reveal + visual metaphor. The number lands, the image tells them *why* that number is bad.
-
-**Layout:** Two-column. Left: giant number + one-line caption. Right: the noise→signal visual.
-
-**Copy:**
-
-> Pill tag: `THE GAP`
->
-> Left column — enormous numeral: **6**
-> Just below, smaller: `out of ~32 active EPD initiatives`
->
-> Below that, one line in italic: *Multiple active projects haven't had a status update in 30+ days.*
->
-> Right column: **the noise-to-signal visual** (see image notes below)
+Use the four-field fill-in from `offsite-presentation.md`. No new visuals needed; the template handles it.
 
 ---
 
-## Slide 3 — Define the Problem
-
-Already drafted — use the four-field fill-in from `offsite-presentation.md`. No new visuals needed; the template handles it.
-
----
-
-## Slide 4 — What I Built
+## Slide 3 — What I Built
 
 **Purpose:** One glance = "I get it." Four messy inputs resolve into one clean pulse.
 
@@ -82,15 +66,17 @@ Four horizontal waveforms stacked on the left side, each styled to evoke its sou
 | **Slack** | Dense, chatty AM-modulation-looking sine noise (constant chatter) |
 | **Amplitude** | Smooth analog sine wave, slowly varying (metric trends) |
 
-Each wave is labeled on the left with its source name + a small monochrome icon. All four waves flow rightward into a **convergence node** (a glowing lime dot or wedge) roughly center-right. Out of the node emerges **one bold, clean, lime-green ECG/heartbeat pulse line** extending to the right edge, labeled `PULSE`.
+Each wave is labeled on the left with its source name. All four waves flow rightward into a **convergence node** (a glowing lime dot) roughly center-right. Out of the node emerges **one bold, clean, lime-green ECG/heartbeat pulse line** extending to the right edge, labeled `PULSE`.
 
-Optional detail: a faint vertical dashed line at the convergence point labeled `SYNTHESIS` or `CLAUDE + MCP`.
+Optional detail: a faint label at the convergence point reading `SYNTHESIS · CLAUDE + MCP`.
 
-**Why this works:** The four-into-one is instantly readable. The waveform styles make each source feel distinct without needing to read labels. The output pulse line matches the brand accent color, tying the visual into the deck's DNA.
+**Visual:** Use `docs/slides/slide-4-convergence.svg`.
+
+**Why this works:** The four-into-one is instantly readable. The waveform styles make each source feel distinct. The output pulse line matches the brand accent color. And it visually inverts the hierarchy from Slide 1 — instead of humans writing upward, signals flow into one synthesized output.
 
 ---
 
-## Slide 5 — Demo
+## Slide 4 — Demo
 
 **Purpose:** Transition beat. Gives you 2 seconds to switch from Keynote to browser.
 
@@ -103,51 +89,33 @@ Optional detail: a faint vertical dashed line at the convergence point labeled `
 >
 > Option B — matches the slide-1 italic treatment:
 > *Let's watch it run.*
->
-> Option C — call-back to the hook:
-> *From **8** to **45**.*
 
-**Visual:** None, or the same faint pulse line from Slide 4 running across the bottom as a brand tie-in.
+**Visual:** None, or the same faint pulse line from Slide 3 running across the bottom as a brand tie-in.
 
 ---
 
 ## How to generate the actual images
 
-You have three practical paths. Ranked by fit for this deck.
+The SVGs for Slides 1 and 3 are already generated at `docs/slides/`:
 
-### Path 1 — SVG (best fit, I can generate now)
+- `slide-2-status-tax.svg` — hierarchy pyramid for Slide 1
+- `slide-4-convergence.svg` — signal convergence for Slide 3
+- `slide-4-convergence.png` — PNG export of the above
 
-The Slide 2 and Slide 4 visuals are geometric/abstract — waveforms, pulses, convergence. These render beautifully as SVG, will perfectly match the brand palette (exact hex codes, not approximate), scale losslessly, and can be dropped into Keynote/Google Slides/Figma as images.
+(Filenames are historical — they reflect earlier slide numbering and weren't renamed when the deck was restructured.)
 
-**I can generate these SVGs directly in this session** if you want — just say the word and I'll write them to `docs/slides/` as standalone files you can export to PNG or drop straight in.
+Slides 2 and 4 are type-only — build those directly in your slide tool using the existing template.
 
-### Path 2 — AI image generation (DALL-E / Midjourney / Claude)
+### Fallback: AI image generation
 
-Good for more photorealistic or textured visuals. Paste these prompts:
+If the SVGs feel too clinical, you can regenerate with image-generation tools:
 
-**Slide 2 — noise and pulse:**
-> Abstract editorial illustration, minimalist, cream off-white background (#F1ECE0), thin line art. Top two-thirds: four overlapping noisy horizontal waveforms in muted grey, chaotic and low-contrast, evoking scattered data signals. Bottom third: one clean, bright chartreuse-green (#C6E812) ECG heartbeat pulse line running horizontally, sharp and glowing, cutting through the noise. No text. Flat vector style, generous whitespace, wide aspect ratio 16:9.
+**Status tax (Slide 1) — hierarchy pyramid:**
+> Minimalist editorial infographic, cream off-white background (#F1ECE0), flat vector style. A pyramidal node-link diagram showing 32 small dots at the bottom narrowing up through 4 medium dots, 2 larger dots, to 1 dark node at the top. Thin grey lines connect each level upward, showing aggregation flow. Row labels on the left side. Lots of whitespace, 16:9 aspect ratio, no distracting color — only dark greys and the cream background.
 
-**Slide 4 — signal convergence:**
-> Editorial infographic, cream off-white background (#F1ECE0), flat vector style, minimalist. Left side: four horizontal waveform lines stacked vertically, each in a distinct style — a square wave, a jagged sawtooth, a dense sine-wave noise pattern, and a smooth slow sine curve — all in muted dark grey. Each waveform labeled with a small monochrome icon. All four waves flow rightward, converging at a bright chartreuse-green (#C6E812) glowing node in the center-right. From the node, a single bold clean green ECG heartbeat pulse line emerges and extends to the right edge. 16:9 aspect ratio, no text, lots of whitespace.
+**Signal convergence (Slide 3):**
+> Editorial infographic, cream off-white background (#F1ECE0), flat vector style, minimalist. Left side: four horizontal waveform lines stacked vertically, each in a distinct style — a square wave, a jagged sawtooth, a dense sine-wave noise pattern, and a smooth slow sine curve — all in muted dark grey. All four waves flow rightward, converging at a bright chartreuse-green (#C6E812) glowing node in the center-right. From the node, a single bold clean green ECG heartbeat pulse line emerges and extends to the right edge. 16:9 aspect ratio, no text, lots of whitespace.
 
-Tip: generate 3-4 variations and pick the one where the chartreuse matches your deck accent. You may need to color-correct in post.
+### Figma (if you want fully editable versions)
 
-### Path 3 — Figma (you have MCP access)
-
-If you want the visuals fully editable and on-brand, build them in Figma. You have the Figma MCP connector active, so:
-
-- Create a new Figma file with `create_new_file`
-- Sketch each visual as simple shapes + strokes
-- Use the exact Tilt accent hex once you sample it from an existing Tilt deck
-- Export as PNG/SVG and drop into your slide tool
-
-This is the most work but gives you full editorial control and native brand consistency.
-
----
-
-## Recommendation
-
-1. Use the **SVG path** for Slides 2 and 4 — it's the cleanest match for the abstract waveform concepts and I can generate them now.
-2. Slides 1, 3, and 5 are type-only — build those directly in your slide tool using the template you already have.
-3. If the SVGs feel too clinical, fall back to Path 2 with the prompts above.
+You have Figma MCP access. To re-render either SVG in Figma: create a new file, recreate the shapes, sample exact Tilt brand hex codes, export. Most work, most editorial control.
