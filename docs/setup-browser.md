@@ -45,7 +45,7 @@ Upload the configs relevant to your teams:
 
 **Pod configs (required — at least one):**
 - `config/caa.json` — Cash Advance - Activation
-- `config/csh.json` — Cash Advance - Retention
+- `config/subex.json` — Subscription Experience
 - `config/cargo.json` — Card Growth
 - `config/cpc.json` — Card Payments & Collections
 

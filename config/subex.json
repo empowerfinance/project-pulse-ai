@@ -1,14 +1,14 @@
 {
-  "pod": "Cash Advance - Retention",
-  "team_key": "CSH",
-  "team_id": "d7d3a397-c838-4db8-a443-0bc2925aafb6",
+  "pod": "Subscription Experience",
+  "team_key": "SUBEX",
+  "team_id": "29e668a0-c725-4a92-a87f-e7dcd1816881",
   "github_repos": [
     "empowerfinance/empower-android",
     "empowerfinance/empower-ios",
     "empowerfinance/empower-app"
   ],
   "amplitude_project_id": "152808",
-  "issue_prefix": "CSH",
+  "issue_prefix": "SUBEX",
   "noise_filters": {
     "exclude_labels": ["SweeperAI"],
     "exclude_title_patterns": ["SweeperAI Summary"]
